@@ -21,14 +21,20 @@
 
 package edu.wright.cs.jfiles.rmi;
 
-import java.rmi.server.RemoteObject;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
- * A starting attempt at designing a remote object class to be implemented
- * by the client.
+ * A remote interface to be implemented by the JFiles client and server.
  * @author Samuel Willoughby
  *
  */
-public class ClientRemote extends RemoteObject {
-
+public interface JFilesRemote extends Remote {
+	/**
+	 * Abstract method that should return "HELLO WORLD!!!" when implemented
+	 * in server and client.
+	 * @return the string "HELLO WORLD!!!"
+	 * @throws RemoteException required by all remote methods
+	 */
+	String sayHello() throws RemoteException;
 }

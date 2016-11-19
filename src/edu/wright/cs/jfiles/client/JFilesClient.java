@@ -22,6 +22,7 @@
 package edu.wright.cs.jfiles.client;
 
 import edu.wright.cs.jfiles.common.NetUtil;
+import edu.wright.cs.jfiles.rmi.JFilesRemote;
 import edu.wright.cs.jfiles.socketmanagement.SocketManager;
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
@@ -38,6 +39,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
@@ -46,7 +48,7 @@ import java.util.Scanner;
  * @author Roberto C. Sánchez &lt;roberto.sanchez@wright.edu&gt;
  *
  */
-public class JFilesClient implements Runnable {
+public class JFilesClient implements Runnable, JFilesRemote {
 
 	//static final Logger logger = LogManager.getLogger(JFilesClient.class);
 	private String host = "localhost";
@@ -326,6 +328,11 @@ public class JFilesClient implements Runnable {
 
 		Thread thread = new Thread(jf);
 		thread.start();
+	}
+
+	@Override
+	public String sayHello() throws RemoteException {
+		return "HELLO WORLD!!!";
 	}
 
 }

@@ -22,6 +22,7 @@
 package edu.wright.cs.jfiles.server;
 
 import edu.wright.cs.jfiles.common.NetUtil;
+import edu.wright.cs.jfiles.rmi.JFilesRemote;
 import edu.wright.cs.jfiles.socketmanagement.SocketManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +37,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
 
 /**
  * The main class of the JFiles server application.
@@ -43,7 +45,7 @@ import java.net.Socket;
  * @author Roberto C. Sánchez &lt;roberto.sanchez@wright.edu&gt;
  *
  */
-public class JFilesServer implements Runnable {
+public class JFilesServer implements Runnable, JFilesRemote {
 
 	static final Logger logger = LogManager.getLogger(JFilesServer.class);
 	private static final int PORT = 9786;
@@ -251,6 +253,11 @@ public class JFilesServer implements Runnable {
 			//Iterates the numThrds variable by 1
 			numThrds++;
 		}
+	}
+
+	@Override
+	public String sayHello() throws RemoteException {
+		return "HELLO WORLD!!!";
 	}
 
 }
