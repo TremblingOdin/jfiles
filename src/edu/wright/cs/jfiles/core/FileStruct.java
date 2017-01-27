@@ -110,6 +110,7 @@ public class FileStruct implements Serializable {
 		}
 
 		//Basic file attributes
+		attrList.put("path", path.toFile().getAbsolutePath());
 		attrList.put("name", path.toFile().getName());
 		attrList.put("lastModifiedTime", Files.getAttribute(path, "lastModifiedTime"));
 		attrList.put("lastAccessTime", Files.getAttribute(path, "lastAccessTime"));

@@ -23,6 +23,7 @@ package edu.wright.cs.jfiles.gui.common;
 
 import edu.wright.cs.jfiles.core.FileStruct;
 import edu.wright.cs.jfiles.core.XmlHandler;
+import edu.wright.cs.jfiles.gui.client.ClientSideGui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -44,17 +45,20 @@ import java.util.Map;
  */
 public class JDirectoryIconView extends FlowPane {
 
-	private Map<FileStruct, JFileIconView> contents;
+	private Map<JFileIconView, FileStruct> contents;
 
 	private Map<FileStruct.Type, ContextMenu> contextMenus;
+
+	private final ClientSideGui clientGui;
 
 	/**
 	 * Default Constructor. This constructor creates an empty JDirectoryIconView
 	 */
-	public JDirectoryIconView() {
+	public JDirectoryIconView(ClientSideGui gui) {
 		super();
 		contents = new HashMap<>();
 		contextMenus = new HashMap<>();
+		clientGui = gui;
 
 		this.setRowValignment(VPos.TOP);
 	}
@@ -107,7 +111,8 @@ public class JDirectoryIconView extends FlowPane {
 			JDirectoryIconView.setMargin(iconView, new Insets(5, 5, 5, 5));
 			getChildren().add(iconView);
 
-			contents.put(file, iconView);
+
+			contents.put(iconView, file);
 		}
 	}
 
@@ -124,10 +129,21 @@ public class JDirectoryIconView extends FlowPane {
 		contextMenus.put(type, menu);
 
 		// Update all current children
-		for (JFileIconView view : contents.values()) {
+		for (JFileIconView view : contents.keySet()) {
 			if (view.getType() == type) {
 				view.setContextMenu(menu);
 			}
 		}
+	}
+
+	/**
+	 * Sets the clients currently selected file to the FileStruct represented by
+	 * fileView.
+	 *
+	 * @param fileView
+	 *            file to select
+	 */
+	public void setSelectedFile(JFileIconView fileView) {
+		clientGui.setSelectedFile(contents.get(fileView));
 	}
 }

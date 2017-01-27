@@ -119,6 +119,11 @@ public class JFileIconView extends BorderPane {
 		// Register event handlers
 		setOnContextMenuRequested(event -> contextMenu.show((JFileIconView) event.getSource(),
 				event.getScreenX(), event.getScreenY()));
+
+		setOnMousePressed(event -> {
+			JDirectoryIconView parent = (JDirectoryIconView) this.getParent();
+			parent.setSelectedFile(this);
+		});
 	}
 
 	/**

@@ -21,6 +21,7 @@
 
 package edu.wright.cs.jfiles.gui.client;
 
+import edu.wright.cs.jfiles.core.FileStruct;
 import edu.wright.cs.jfiles.core.FileStruct.Type;
 import edu.wright.cs.jfiles.gui.common.JDirectoryIconView;
 
@@ -71,6 +72,10 @@ public class ClientSideGui extends Application {
 	String username = "";
 	String password = "";
 	Button exitButton;
+
+	FileStruct selectedFile;
+
+	// Controls
 	Button connectButton;
 	Label noConnectionLabel;
 	Label invalidLabel;
@@ -78,6 +83,9 @@ public class ClientSideGui extends Application {
 	Label emptyPasswordFieldLabel;
 	TextField usernameTextField;
 	TextField passwordTextField;
+
+	// Context Menus
+	private ContextMenu fileContextMenu;
 
 	/**
 	 * This method is where most visual elements are created and manipulated.
@@ -213,7 +221,7 @@ public class ClientSideGui extends Application {
 		Menu editMenu = new Menu("Edit");
 
 		// Add Menu Items and a Separator to Menu.
-		fileMenu.getItems().addAll(openMenuItem, new SeparatorMenuItem(), closeMenuItem);
+		fileMenu.getItems().addAll(new SeparatorMenuItem(), closeMenuItem);
 		editMenu.getItems().addAll(createMenuItem, openMenuItem, deleteMenuItem, copyMenuItem,
 				pasteMenuItem, cutMenuItem);
 
@@ -224,23 +232,10 @@ public class ClientSideGui extends Application {
 		headderMenuBar.getMenus().addAll(fileMenu, editMenu);
 
 		// Build Context menus
-		ContextMenu fileContextMenu = new ContextMenu();
-
-		// Create menu Items
-		MenuItem openContextMenuItem = new MenuItem("Open");
-		// MenuItem closeContextMenuItem = new MenuItem("Close");
-		// MenuItem newContextMenuItem = new MenuItem("Create");
-		MenuItem deleteContextMenuItem = new MenuItem("Delete");
-		MenuItem copyContextMenuItem = new MenuItem("Copy");
-		MenuItem pasteContextMenuItem = new MenuItem("Paste");
-		MenuItem cutContextMenuItem = new MenuItem("Cut");
-
-		fileContextMenu.getItems().addAll(openContextMenuItem, new SeparatorMenuItem(),
-				cutContextMenuItem, copyContextMenuItem, pasteContextMenuItem,
-				new SeparatorMenuItem(), deleteContextMenuItem);
+		buildContextMenus();
 
 		// Creates directory view and adds to center of screen
-		JDirectoryIconView directoryView = new JDirectoryIconView();
+		JDirectoryIconView directoryView = new JDirectoryIconView(this);
 		directoryView.populateLocal("./src/edu/wright/cs/jfiles/core");
 		directoryView.addContextMenu(fileContextMenu, Type.FILE);
 		basePane.setCenter(directoryView);
@@ -256,6 +251,26 @@ public class ClientSideGui extends Application {
 		primaryStage.setResizable(true);
 		// Displays the start Stage and its contents.
 		primaryStage.show();
+	}
+
+	/**
+	 * Builds the various context menus needed for the UI.
+	 */
+	private void buildContextMenus() {
+		// Create menu Items
+		MenuItem openContextMenuItem = new MenuItem("Open");
+		MenuItem deleteContextMenuItem = new MenuItem("Delete");
+		MenuItem copyContextMenuItem = new MenuItem("Copy");
+		MenuItem pasteContextMenuItem = new MenuItem("Paste");
+		MenuItem cutContextMenuItem = new MenuItem("Cut");
+
+		// Create context menu
+		fileContextMenu = new ContextMenu();
+		fileContextMenu.getItems().addAll(openContextMenuItem, new SeparatorMenuItem(),
+				cutContextMenuItem, copyContextMenuItem, pasteContextMenuItem,
+				new SeparatorMenuItem(), deleteContextMenuItem);
+
+		// Register event handlers
 	}
 
 	/**
@@ -296,6 +311,17 @@ public class ClientSideGui extends Application {
 		label.setTextFill(Color.web(color));
 		label.setVisible(visible);
 		return label;
+	}
+
+	/**
+	 * Sets the currently selected file.
+	 *
+	 * @param file
+	 *            the file to select
+	 */
+	public void setSelectedFile(FileStruct file) {
+		selectedFile = file;
+		System.out.println(selectedFile.getValue("path"));
 	}
 
 	/**
